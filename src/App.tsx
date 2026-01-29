@@ -1,16 +1,19 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useState } from "react";
 import MoviesList from "./movies/MoviesList";
 import MoviesPage from "./movies/MoviePage";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "./navbar/NavBar";
 
 function App() {
+  const [query, setQuery] = useState("");
+
   return (
     <>
+      <NavBar searchTerm={query} onSearchChange={(value) => setQuery(value)} />
       <Routes>
-        <Route path="/" element={<MoviesList />} />
-        <Route path="/:id" element={<MoviesPage />} />
+        <Route path="/" element={<Navigate to="/movies" replace />} />
+        <Route path="/movies" element={<MoviesList query={query} />} />
+        <Route path="/movies/:id" element={<MoviesPage />} />
       </Routes>
     </>
   );

@@ -9,10 +9,10 @@ export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <article
       className={styles.card}
-      onClick={() => navigate(`${movie.id}`)}
+      onClick={() => navigate(`/movies/${movie.id}`)}
     >
       <img className={styles.img} src={movie.img} alt={movie.title} />
-      <h5>{movie.title}</h5>
+      <p>{movie.title}</p>
       <p>{movie.year}</p>
     </article>
   );
