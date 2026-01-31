@@ -1,17 +1,34 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 import MoviesList from "./movies/MoviesList";
 import MoviesPage from "./movies/MoviePage";
-import { Route, Routes } from "react-router-dom";
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "./navbar/NavBar";
+import Filters from "./filters/Filters";
+import useFilters from "./hooks/useFilters";
+import { useState } from "react";
+import "./App.css";
 function App() {
+  const [query, setQuery] = useState("");
+  const { filters, setFilters } = useFilters();
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={<MoviesList />} />
-        <Route path="/:id" element={<MoviesPage />} />
-      </Routes>
+      <NavBar searchTerm={query} onSearchChange={(value) => setQuery(value)} />
+      <main>
+        <h1>Фильмы</h1>
+        <section aria-label="Фильтры">
+          <Filters filters={filters} onChange={setFilters} />
+        </section>
+        <section aria-label="Список фильмов">
+          <Routes>
+            <Route path="/" element={<Navigate to="/movies" replace />} />
+            <Route
+              path="/movies"
+              element={<MoviesList query={query} filters={filters} />}
+            />
+            <Route path="/movies/:id" element={<MoviesPage />} />
+          </Routes>
+        </section>
+      </main>
     </>
   );
 }

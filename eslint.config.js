@@ -15,6 +15,22 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+    rules: {
+      'max-len': [
+        'warn',
+        {
+          code: 100,
+          ignoreComments: true,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreUrls: true,
+        },
+      ],
+      'object-curly-newline': ['warn', { multiline: true, consistent: true }],
+      'array-bracket-newline': ['warn', { multiline: true, minItems: 3 }],
+      'array-element-newline': ['warn', { multiline: true, minItems: 3 }],
+      'function-paren-newline': ['warn', 'multiline'],
+    },
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
