@@ -3,15 +3,14 @@
 import type { Movie } from "./types/Movie";
 
 export const getMovies = async (params?: {
-  q?: string;
+  titleLike?: string;
   signal?: AbortSignal;
 }): Promise<Movie[]> => {
   const url = new URL("http://localhost:4000/movies");
-  const q = params?.q?.trim();
-  if (q) url.searchParams.set("q", q);
+  const titleLike = params?.titleLike?.trim();
+  if (titleLike) url.searchParams.set("title_like", titleLike);
   const res = await fetch(url.toString(), { signal: params?.signal });
   if (!res.ok) throw new Error("Failed to fetch movies");
-  console.log(q, res);
   return res.json();
 };
 
