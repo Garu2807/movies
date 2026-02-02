@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../icons/logo.png";
 
@@ -40,13 +41,19 @@ function NavBar({ searchTerm, onSearchChange }: NavBarProps) {
   }, []);
 
   return (
-    <header
-      className={`${styles.header} ${hidden ? styles.headerHidden : ""}`}
-    >
+    <header className={`${styles.header} ${hidden ? styles.headerHidden : ""}`}>
       <div className={styles.container}>
         <nav className={styles.navbar}>
           <div>
             <img className={styles.logo} src={logo} alt="logo" />
+          </div>
+          <div className={styles.links}>
+            <Link className={styles.link} to="/movies">
+              Фильмы
+            </Link>
+            <Link className={styles.link} to="/favourites">
+              Моё
+            </Link>
           </div>
         </nav>
         <input

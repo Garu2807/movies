@@ -3,10 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import styles from "./Movies.module.css";
 import { getMovieById } from "./api";
 import type { Movie } from "./types/Movie";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { toggleFavourite } from "../favourites/favouritesSlice";
 
 export default function MoviePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const ids = useAppSelector((store) => store.favourites.ids);
 
   const {
     data: movie,
@@ -24,24 +28,37 @@ export default function MoviePage() {
     navigate("/movies");
     return null;
   }
+  const isFavourite = ids.includes(Number(movie.id));
 
   return (
     <section className={styles.moviePage}>
-      <div className={styles.moviePosterWrap}>
+      <div className={styles.moviePagePosterWrap}>
         <img
           src={movie.img}
           alt={movie.title}
-          className={styles.moviePoster}
+          className={styles.moviePagePoster}
         />
       </div>
-      <div className={styles.movieContent}>
-        <h1 className={styles.movieTitle}>{movie.title}</h1>
-        <div className={styles.movieInfo}>
-          <p>{movie.rating}</p>
-          <p>{movie.genre}</p>
-          <p>{movie.year}</p>
+      <div className={styles.moviePageContent}>
+        <div className={styles.moviePageHeaderRow}>
+          <h1 className={styles.moviePageTitle}>{movie.title}</h1>
+          <button
+            className={`${styles.moviePageFavButton} ${
+              isFavourite ? styles.moviePageFavButtonActive : ""
+            }`}
+            type="button"
+            aria-pressed={isFavourite}
+            onClick={() => dispatch(toggleFavourite(Number(movie.id)))}
+          >
+            {isFavourite ? "В избранном" : "В избранное"}
+          </button>
         </div>
-        <p className={styles.movieDesc}>{movie.dscr}</p>
+        <div className={styles.moviePageInfo}>
+          <p className={styles.moviePageInfoItem}>{movie.rating}</p>
+          <p className={styles.moviePageInfoItem}>{movie.genre}</p>
+          <p className={styles.moviePageInfoItem}>{movie.year}</p>
+        </div>
+        <p className={styles.moviePageDesc}>{movie.dscr}</p>
       </div>
     </section>
   );

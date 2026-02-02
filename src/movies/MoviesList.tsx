@@ -5,10 +5,11 @@ import MovieCard from "./MovieCard";
 import { getMovies } from "./api";
 import useDebounce from "../hooks/useDebounce";
 import type { FiltersState } from "../hooks/useFilters";
+import Filters from "../filters/Filters";
+import useFilters from "../hooks/useFilters";
 
 type MoviesListProps = {
   query: string;
-  filters: FiltersState;
 };
 
 const toNumber = (value: string): number | undefined => {
@@ -28,9 +29,9 @@ const parseYearRange = (value: string): { from?: number; to?: number } => {
   };
 };
 
-function MoviesList({ query, filters }: MoviesListProps) {
+function MoviesList({ query}: MoviesListProps) {
   const debouncedQuery = useDebounce(query, 400);
-
+  const { filters, setFilters } = useFilters();
   const {
     data = [],
     isLoading,
@@ -62,15 +63,21 @@ function MoviesList({ query, filters }: MoviesListProps) {
   if (isLoading) return <div>Загрузка...</div>;
   if (error) return <div>Ошибка: {(error as Error).message}</div>;
   return (
-    <div className={styles.container}>
-      {filteredMovies.length === 0 ? (
-        <p className={styles.empty}>Ничего не найдено</p>
-      ) : (
-        filteredMovies.map((movie, index) => (
-          <MovieCard key={movie.id} movie={movie} priority={index < 2} />
-        ))
-      )}
-    </div>
+    <>
+      <h1>Фильмы</h1>
+      <section aria-label="Фильтры">
+        <Filters filters={filters} onChange={setFilters} />
+      </section>
+      <div className={styles.moviesList}>
+        {filteredMovies.length === 0 ? (
+          <p className={styles.moviesListEmpty}>Ничего не найдено</p>
+        ) : (
+          filteredMovies.map((movie, index) => (
+            <MovieCard key={movie.id} movie={movie} priority={index < 2} />
+          ))
+        )}
+      </div>
+    </>
   );
 }
 

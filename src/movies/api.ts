@@ -11,7 +11,8 @@ export const getMovies = async (params?: {
   if (titleLike) url.searchParams.set("title_like", titleLike);
   const res = await fetch(url.toString(), { signal: params?.signal });
   if (!res.ok) throw new Error("Failed to fetch movies");
-  return res.json();
+  const data = await res.json();
+  return data;
 };
 
 export const getMovieById = async (id: string) => {
