@@ -2,8 +2,6 @@ import MoviesList from "./movies/MoviesList";
 import MoviesPage from "./movies/MoviePage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./navbar/NavBar";
-import Filters from "./filters/Filters";
-import useFilters from "./hooks/useFilters";
 import { useState } from "react";
 import "./App.css";
 import FavouritesList from "./favourites/FavouritesList";

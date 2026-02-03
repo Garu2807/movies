@@ -18,11 +18,7 @@ const loadFavourites = (): number[] => {
 };
 
 const saveFavourites = (ids: number[]) => {
-  try {
-    localStorage.setItem(favouritesStorageKey, JSON.stringify(ids));
-  } catch {
-    // ignore write errors
-  }
+  localStorage.setItem(favouritesStorageKey, JSON.stringify(ids));
 };
 
 const initialState: FavouritesState = {
